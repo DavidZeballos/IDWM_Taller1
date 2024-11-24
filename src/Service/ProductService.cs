@@ -3,7 +3,7 @@ using IDWM_TallerAPI.Src.Interfaces.Service;
 using IDWM_TallerAPI.Src.Interfaces.Repository;
 using IDWM_TallerAPI.Src.Models;
 
-namespace IDWM_TallerAPI.Src.Services
+namespace IDWM_TallerAPI.Src.Service
 {
     public class ProductService : IProductService
     {

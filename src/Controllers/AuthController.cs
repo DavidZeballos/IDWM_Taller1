@@ -21,31 +21,55 @@ namespace IDWM_TallerAPI.Src.Controllers
             _authService = authService;
         }
 
-        /// Registra un nuevo usuario.
-        /// "registerUserDto" son los datos del usuario a registrar.
-        /// Retorna un Token JWT si el registro es exitoso.
+        // Registra un nuevo usuario.
+        // Retorna un Token JWT si el registro es exitoso.
         [HttpPost("register")]
-        public async Task<ActionResult<string>> Register(RegisterUserDto registerUserDto){
-            try{
-                var response = await _authService.RegisterUser(registerUserDto);
-                return Ok(response);
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> Register(RegisterUserDto registerUserDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
-            catch(Exception ex){
-                return BadRequest(ex.Message);
+
+            try
+            {
+                var token = await _authService.RegisterUser(registerUserDto);
+                return Ok(token);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message); // Error específico
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // Error genérico
             }
         }
 
-        /// Inicia sesión para un usuario existente.
-        /// "loginDto" son las credenciales de inicio de sesión.
-        /// Retorna un Token JWT si las credenciales son correctas.
+        // Inicia sesión para un usuario existente.
+        // Retorna un Token JWT si las credenciales son correctas.
         [HttpPost("login")]
-        public async Task<IResult> Login (LoginDto loginDto){
-            try{
-                var response = await _authService.LoginUser(loginDto);
-                return TypedResults.Ok(response);
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
-            catch(Exception ex){
-                return TypedResults.BadRequest(ex.Message);
+
+            try
+            {
+                var token = await _authService.LoginUser(loginDto);
+                return Ok(token);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Unauthorized(ex.Message); // Error de autenticación
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // Error genérico
             }
         }
     }

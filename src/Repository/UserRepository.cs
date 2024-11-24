@@ -1,60 +1,51 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using IDWM_TallerAPI.Src.DTOs;
 using IDWM_TallerAPI.Src.Data;
 using IDWM_TallerAPI.Src.Interfaces.Repository;
 using IDWM_TallerAPI.Src.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-namespace IDWM_TallerAPI.Src.Repositories
+namespace IDWM_TallerAPI.Src.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DataContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UserRepository(DataContext context)
+        public UserRepository(UserManager<User> userManager)
         {
-            _context = context;
+            _userManager = userManager;
         }
 
-        public async Task AddUser(User user)
+        public async Task<IdentityResult> AddUser(User user)
         {
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            return await _userManager.CreateAsync(user);
         }
 
-        public async Task DeleteUser(User user)
+        public async Task<IdentityResult> DeleteUser(User user)
         {
-            _context.Remove(user);
-            await _context.SaveChangesAsync();
+            return await _userManager.DeleteAsync(user);
         }
 
-        public async Task EditUser(User user)
+        public async Task<IdentityResult> EditUser(User user)
         {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<User?> GetUserByEmail(string Email)
+        public async Task<User?> GetUserByEmail(string email)
         {
-            var user = await _context.Users.Where(u => u.Email == Email)
-                                            .Include(u => u.Role)
-                                            .FirstOrDefaultAsync();
-            return user;
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User?> GetUserById(int id)
         {
-            var user = await _context.Users.Include(u => u.Role).Where(u => u.Id == id).FirstOrDefaultAsync();
-            return user;
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            var users = await _context.Users.Include(u => u.Role).ToListAsync();
-            return users;
+            return await _userManager.Users.ToListAsync();
         }
     }
 }

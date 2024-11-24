@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IDWM_TallerAPI.Src.DTOs;
-using IDWM_TallerAPI.Src.Models;
-using IDWM_TallerAPI.Src.Interfaces.Repository;
 using IDWM_TallerAPI.Src.Interfaces.Service;
-using Microsoft.AspNetCore.Authorization;
-
+using System.Security.Claims;
 
 namespace IDWM_TallerAPI.Src.Controllers
 {
@@ -24,33 +18,60 @@ namespace IDWM_TallerAPI.Src.Controllers
             _userService = userService;
         }
 
-
-        /// Edita el perfil del usuario autenticado.
-        /// "editUser" son los nuevos datos del usuario.
-        /// Retorna un mensaje de éxito o error.
-        [HttpPut("EditProfile")]
-        public ActionResult<string> EditProfile([FromBody] EditUserDto editUser)
+        // Método para obtener el ID del usuario autenticado desde los claims
+        private int GetAuthenticatedUserId()
         {
-            try{
-                var userId = int.Parse(User.Claims.First(c => c.Type == "Id").Value);
-                var result = _userService.EditUser(userId, editUser).Result;
-                return Ok(result);   
-            } catch (Exception ex){
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null || !int.TryParse(userIdClaim, out var userId))
+            {
+                throw new UnauthorizedAccessException("Usuario no autenticado o ID inválido.");
+            }
+
+            return userId;
+        }
+
+        // Edita el perfil del usuario autenticado.
+        // "editUser" son los nuevos datos del usuario.
+        // Retorna un mensaje de éxito o error.
+        [HttpPut("EditProfile")]
+        public async Task<IActionResult> EditProfile([FromBody] EditUserDto editUser)
+        {
+            if (editUser == null)
+            {
+                return BadRequest("Los datos proporcionados no son válidos.");
+            }
+
+            try
+            {
+                var userId = GetAuthenticatedUserId();
+                await _userService.EditUser(userId, editUser);
+                return Ok("Perfil actualizado correctamente.");
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
 
-        /// Cambia la contraseña del usuario autenticado.
-        /// "changePasswordDto" son los datos de la contraseña nueva y de la actual.
-        /// Retorna un mensaje de éxito o error.
+        // Cambia la contraseña del usuario autenticado.
+        // "changePasswordDto" son los datos de la contraseña nueva y de la actual.
+        // Retorna un mensaje de éxito o error.
         [HttpPut("ChangePassword")]
-        public ActionResult<string> ChangeUserPassword([FromBody] ChangePasswordDto changePasswordDto)
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordDto changePasswordDto)
         {
-            try{
-                var userId = int.Parse(User.Claims.First(c => c.Type == "Id").Value);
-                var result = _userService.ChangeUserPassword(userId, changePasswordDto);
-                return Ok(result);
-            } catch (Exception ex){
+            if (changePasswordDto == null)
+            {
+                return BadRequest("Los datos proporcionados no son válidos.");
+            }
+
+            try
+            {
+                var userId = GetAuthenticatedUserId();
+                await _userService.ChangeUserPassword(userId, changePasswordDto);
+                return Ok("Contraseña actualizada correctamente.");
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }

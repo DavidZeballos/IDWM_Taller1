@@ -21,11 +21,11 @@ namespace IDWM_TallerAPI.Src.Controllers
             _purchaseService = purchaseService;
         }
 
-        /// Obtiene una lista de compras basadas en los parámetros de búsqueda.
-        /// "id" es la ID opcional de la compra.
-        /// "date" es la fecha opcional de la compra.
-        /// "price" es el precio opcional de la compra.
-        /// Retorna una lista de compras que coinciden con los parámetros de búsqueda.
+        // Obtiene una lista de compras basadas en los parámetros de búsqueda.
+        // "id" es la ID opcional de la compra.
+        // "date" es la fecha opcional de la compra.
+        // "price" es el precio opcional de la compra.
+        // Retorna una lista de compras que coinciden con los parámetros de búsqueda.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Purchase>>> GetPurchasesByQuery([FromQuery] int? id, [FromQuery] DateTime? date, [FromQuery] int? price)
         {

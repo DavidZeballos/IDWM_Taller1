@@ -13,7 +13,7 @@ namespace IDWM_TallerAPI.Src.DTOs
         [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "El nombre solo puede contener caracteres del abecedario español.")]
         [MinLength(8, ErrorMessage ="El nombre debe tener al menos 8 caracteres.")]
         [MaxLength(255, ErrorMessage = "El nombre no puede sobrepasar los 255 caracteres.")]
-        public string Name { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El campo email es obligatorio")]
         [EmailAddress(ErrorMessage = "El email no tiene formato valido")]

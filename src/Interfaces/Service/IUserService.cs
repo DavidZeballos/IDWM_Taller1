@@ -11,7 +11,7 @@ namespace IDWM_TallerAPI.Src.Interfaces.Service
         public Task<IEnumerable<UserDto>> GetUsers(int? id, string? name, string? gender);
         public Task EditUser(int id, EditUserDto editUser);
         public Task DeleteUser(int id);
-        public Task ChangeUserStatus(int id);
+        public Task ToggleUserStatus(int id);
         public Task ChangeUserPassword(int id, ChangePasswordDto changePasswordDto);
     }
 }

@@ -10,7 +10,7 @@ namespace IDWM_TallerAPI.Src.DTOs
         [Required]
         [MinLength(8, ErrorMessage ="El nombre debe tener al menos 8 caracteres.")]
         [MaxLength(255, ErrorMessage = "El nombre no puede sobrepasar los 255 caracteres.")]
-        public required string Name { get; set; } = string.Empty;
+        public required string UserName { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress(ErrorMessage = "El email no tiene formato valido")]
@@ -28,7 +28,6 @@ namespace IDWM_TallerAPI.Src.DTOs
         [Required]
         [RegularExpression(@"^(Masculino|Femenino|Prefiero no decirlo|Otro)$", ErrorMessage = "Debe ser entre Masculino, Femenino, Prefiero no decirlo, y Otro.")]
         public required string Gender { get; set; } = string.Empty;
-        public required string NameRol { get; set; } = string.Empty;
         public List<ProductDto> Products { get; set; } = [];
     }
 }

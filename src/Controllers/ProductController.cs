@@ -13,7 +13,6 @@ using IDWM_TallerAPI.Src.Interfaces.Service;
 namespace IDWM_TallerAPI.Src.Controllers
 {
     [ApiController]
-    [Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
@@ -24,13 +23,9 @@ namespace IDWM_TallerAPI.Src.Controllers
             _productService = service;
         }
 
-
-        /// Obtiene una lista de productos.
-        /// "name" es el nombre opcional del producto.
-        /// "typeName" es el tipo opcional del producto.
-        /// "price" es el precio opcional del producto.
         /// Retorna una lista de productos que coinciden con los parámetros de búsqueda.
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
             [FromQuery] string? name,
             [FromQuery] string? typeName,
@@ -56,9 +51,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         /// Agrega un nuevo producto.
-        /// "product" son los Datos del producto a agregar.
-        /// Retorna un mensaje de éxito o error.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
         {
             try
@@ -77,10 +71,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         /// Edita un producto existente.
-        /// "id" es la ID del producto a editar.
-        /// "editProduct" son los nuevos datos del producto.
-        /// Retorna un mensaje de éxito o error.
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditProduct(int id, [FromBody] EditProductDto editProductDto)
         {
             try
@@ -99,9 +91,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         /// Elimina un producto existente.
-        /// "id" es la ID del producto a eliminar.
-        /// Retorna un mensaje de éxito o error.
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try

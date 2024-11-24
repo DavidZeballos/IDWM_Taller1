@@ -6,7 +6,7 @@ using IDWM_TallerAPI.Src.Models;
 using IDWM_TallerAPI.Src.DTOs;
 using IDWM_TallerAPI.Src.Interfaces.Service;
 
-namespace IDWM_TallerAPI.Src.Services
+namespace IDWM_TallerAPI.Src.Service
 {
     public class MapperService : IMapperService
     {
@@ -51,7 +51,7 @@ namespace IDWM_TallerAPI.Src.Services
 
         public VoucherDto PurchaseToVoucherDto(Purchase purchase)
         {
-            if (purchase is null)
+            if (purchase == null)
             {
                 throw new Exception("Compra no encontrada");
             }
@@ -84,13 +84,11 @@ namespace IDWM_TallerAPI.Src.Services
         {
             return new User
             {
-                Name = registerUserDto.Name,
+                UserName = registerUserDto.UserName,
                 Rut = registerUserDto.Rut,
                 Email = registerUserDto.Email,
                 DateOfBirth = registerUserDto.DateOfBirth,
                 Gender = registerUserDto.Gender,
-                Password = BCrypt.Net.BCrypt.HashPassword(registerUserDto.Password),
-                RoleId = 2, // Se registra como usuario
                 Status = true
             };
         }
@@ -101,17 +99,16 @@ namespace IDWM_TallerAPI.Src.Services
             {
                 Id = user.Id,
                 Rut = user.Rut,
-                Name = user.Name,
-                Email = user.Email,
+                UserName = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty,
                 DateOfBirth = user.DateOfBirth,
                 Gender = user.Gender,
-                NameRol = user.Role.Name
             };
         }
 
         public IEnumerable<UserDto> UsersToUserDto(IEnumerable<User> users)
         {
-            return users.Select(u => UserToUserDto(u));
+            return users.Select(UserToUserDto);
         }
 
         public void MapEditProductDtoToProduct(EditProductDto editProductDto, Product product)
@@ -137,7 +134,7 @@ namespace IDWM_TallerAPI.Src.Services
         public void MapEditUserDtoToUser(EditUserDto editUserDto, User user)
         {
             if (!string.IsNullOrWhiteSpace(editUserDto.Name))
-                user.Name = editUserDto.Name;
+                user.UserName = editUserDto.Name;
 
             if (!string.IsNullOrWhiteSpace(editUserDto.Gender))
                 user.Gender = editUserDto.Gender;

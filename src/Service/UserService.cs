@@ -1,68 +1,57 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IDWM_TallerAPI.Src.DTOs;
 using IDWM_TallerAPI.Src.Interfaces.Service;
 using IDWM_TallerAPI.Src.Interfaces.Repository;
+using IDWM_TallerAPI.Src.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace IDWM_TallerAPI.Src.Services
+namespace IDWM_TallerAPI.Src.Service
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
         private readonly IMapperService _mapperService;
+        private readonly UserManager<User> _userManager;
 
-        public UserService(IUserRepository userRepository, IMapperService mapperService)
+        public UserService(IUserRepository userRepository, IMapperService mapperService, UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _mapperService = mapperService;
-        }
-
-        public async Task<IEnumerable<UserDto>> GetUsers(int? id , string? name , string? gender)
-        {
-            var users = await _userRepository.GetUsers();
-            var mappedUsers = _mapperService.UsersToUserDto(users);
-            return mappedUsers;
-        }
-
-        public async Task EditUser(int id, EditUserDto editUserDto)
-        {
-            // Validar género si se proporciona
-            if (!string.IsNullOrWhiteSpace(editUserDto.Gender) &&
-                !new[] { "Femenino", "Masculino", "Prefiero no decirlo", "Otro" }.Contains(editUserDto.Gender))
-            {
-                throw new InvalidOperationException("El género debe ser uno de los siguientes: Femenino, Masculino, Prefiero no decirlo u Otro.");
-            }
-
-            var existingUser = await _userRepository.GetUserById(id)
-                ?? throw new KeyNotFoundException("Usuario no encontrado.");
-            
-            _mapperService.MapEditUserDtoToUser(editUserDto, existingUser);
-            await _userRepository.EditUser(existingUser);
+            _userManager = userManager;
         }
 
         public async Task DeleteUser(int id)
         {
-            var user = await _userRepository.GetUserById(id)
-                ?? throw new KeyNotFoundException("Usuario no encontrado.");
-
-            await _userRepository.DeleteUser(user);
-        }
-
-        public async Task ChangeUserStatus(int id)
-        {
-            var user = await _userRepository.GetUserById(id)
-                ?? throw new KeyNotFoundException("Usuario no encontrado.");
-
-            if (user.RoleId == 1)
+            var user = await _userRepository.GetUserById(id);
+            if (user == null)
             {
-                throw new InvalidOperationException("No se puede cambiar el estado de un administrador.");
+                throw new KeyNotFoundException("Usuario no encontrado.");
             }
 
-            user.Status = !user.Status;
-            await _userRepository.EditUser(user);
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"No se pudo eliminar el usuario: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
+        }
+
+        public async Task EditUser(int id, EditUserDto editUserDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado.");
+            }
+
+            _mapperService.MapEditUserDtoToUser(editUserDto, user);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"No se pudo editar el usuario: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
         }
 
         public async Task ChangeUserPassword(int id, ChangePasswordDto changePasswordDto)
@@ -74,20 +63,62 @@ namespace IDWM_TallerAPI.Src.Services
             }
 
             // Obtener usuario
-            var user = await _userRepository.GetUserById(id)
-                ?? throw new KeyNotFoundException("Usuario no encontrado.");
+            var user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado.");
+            }
 
             // Validar contraseña actual
-            if (!BCrypt.Net.BCrypt.Verify(changePasswordDto.CurrentPassword, user.Password))
+            var isCurrentPasswordValid = await _userManager.CheckPasswordAsync(user, changePasswordDto.CurrentPassword);
+            if (!isCurrentPasswordValid)
             {
                 throw new InvalidOperationException("La contraseña actual es incorrecta.");
             }
 
-            // Actualizar contraseña
-            user.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
+            // Cambiar contraseña
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"No se pudo cambiar la contraseña: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
+        }
 
-            // Guardar cambios
-            await _userRepository.EditUser(user);
+        public async Task<IEnumerable<UserDto>> GetUsers(int? id = null, string? name = null, string? gender = null)
+        {
+            var users = await _userRepository.GetUsers();
+
+            // Filtrar usuarios opcionalmente según parámetros
+            if (id.HasValue)
+                users = users.Where(u => u.Id == id.Value);
+            if (!string.IsNullOrWhiteSpace(name))
+                users = users.Where(u => u.UserName?.Contains(name, StringComparison.OrdinalIgnoreCase) ?? false);
+            if (!string.IsNullOrWhiteSpace(gender))
+                users = users.Where(u => u.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase));
+
+            return _mapperService.UsersToUserDto(users);
+        }
+
+        public async Task ToggleUserStatus(int id)
+        {
+            var user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado.");
+            }
+
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                throw new InvalidOperationException("No se puede cambiar el estado de un administrador.");
+            }
+
+            user.Status = !user.Status;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"No se pudo actualizar el estado del usuario: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
         }
     }
 }

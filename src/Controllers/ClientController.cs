@@ -40,21 +40,20 @@ namespace IDWM_TallerAPI.Src.Controllers
             }
         }
 
-        /// Cambia el estado de un cliente.
-        /// "id" es la ID del cliente cuyo estado se va a cambiar.
-        /// Retorna un mensaje de éxito o error.
-        [HttpPut("ChangeStatus/{id}")]
-        public async Task<ActionResult<string>> ClientStatus(int id)
+        // Cambiar el estado de un cliente (habilitar/deshabilitar)
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> ToggleClientStatus(int id)
         {
-            try{ 
-                var clients = await _userService.ChangeUserStatus(id);
-                return Ok(clients);
-            }
-            catch(Exception ex){
-                return BadRequest(ex.Message);
-            }
+            await _userService.ToggleUserStatus(id);
+            return Ok($"Estado del cliente con ID {id} actualizado.");
         }
 
-
+        // Eliminar un cliente
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClient(int id)
+        {
+            await _userService.DeleteUser(id);
+            return Ok($"Cliente con ID {id} eliminado.");
+        }
     }
 }

@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace IDWM_TallerAPI.Src.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
     public class PurchaseController : ControllerBase
     {
@@ -27,6 +26,7 @@ namespace IDWM_TallerAPI.Src.Controllers
         // Visualiza el carrito de compra.
         // Muestra una lista de productos añadidos al carrito junto con el total a pagar.
         [HttpGet("cart")]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<CartItemDto>> GetCart()
         {
             var cart = CookieHelper.GetCookie<List<CartItemDto>>(Request, "cart") ?? new List<CartItemDto>();
@@ -34,8 +34,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         // Añade un producto al carrito de compra.
-        // "cartItem" contiene la información del producto y la cantidad.
         [HttpPost("cart/add")]
+        [AllowAnonymous]
         public async Task<ActionResult> AddToCart([FromBody] CartItemDto cartItem)
         {
             // Verifica si el producto existe y está disponible en stock
@@ -62,8 +62,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         // Actualiza la cantidad de un producto en el carrito.
-        // "cartItem" contiene la información del producto y la nueva cantidad.
         [HttpPut("cart/update")]
+        [AllowAnonymous]
         public async Task<ActionResult> UpdateCart([FromBody] CartItemDto cartItem)
         {
             var cart = CookieHelper.GetCookie<List<CartItemDto>>(Request, "cart") ?? new List<CartItemDto>();
@@ -92,8 +92,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         // Elimina un producto del carrito.
-        // "productId" es la ID del producto a eliminar.
         [HttpDelete("cart/remove/{productId}")]
+        [AllowAnonymous]
         public ActionResult RemoveFromCart(int productId)
         {
             var cart = CookieHelper.GetCookie<List<CartItemDto>>(Request, "cart") ?? new List<CartItemDto>();
@@ -112,6 +112,7 @@ namespace IDWM_TallerAPI.Src.Controllers
         // Realiza el pago de todos los productos en el carrito.
         // Vacía el carrito después de procesar la compra.
         [HttpPost("cart/checkout")]
+        [Authorize]
         public async Task<ActionResult> Checkout()
         {
             var cart = CookieHelper.GetCookie<List<CartItemDto>>(Request, "cart") ?? new List<CartItemDto>();
@@ -145,8 +146,8 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         /// Obtiene una lista de vouchers de compra del usuario autenticado.
-        /// Retorna una lista de vouchers.
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<VoucherDto>>> GetPurchases()
         {
             try{ 
@@ -158,7 +159,7 @@ namespace IDWM_TallerAPI.Src.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
         // Obtiene todas las compras realizadas (admin).
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
