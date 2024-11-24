@@ -10,8 +10,7 @@ namespace IDWM_TallerAPI.Src.Models
         public required string Gender { get; set; }
         public required string Password { get; set; }
         public required bool Status { get; set; }
-
-        public List<Product> Products { get; set; } = [];
+        
         public required int RoleId { get; set; }
         public Role Role { get; set; } = null!;
     }

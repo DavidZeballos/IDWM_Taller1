@@ -1,6 +1,6 @@
-namespace IDWM_TallerAPI.Src.Models
+namespace IDWM_TallerAPI.Src.DTOs
 {
-    public class Purchase
+    public class PurchaseDto
     {
         public int Id { get; set; }
         public required DateTime Date { get; set; }
@@ -10,9 +10,9 @@ namespace IDWM_TallerAPI.Src.Models
         public string? DeliveryAddress { get; set; }
 
         public required int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public UserDto User { get; set; } = null!;
         public required int ProductId { get; set; }
-        public Product Product { get; set; } = null!;
+        public ProductDto Product { get; set; } = null!;
 
     }
 }

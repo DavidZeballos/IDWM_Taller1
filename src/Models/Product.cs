@@ -7,8 +7,7 @@ namespace IDWM_TallerAPI.Src.Models
         public required int Price { get; set; }
         public int InStock { get; set; } = 0;
         public required string ImageURL { get; set; }
-
-        public List<User> Users { get; set; } = [];
+        
         public required int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; } = null!;
     }
