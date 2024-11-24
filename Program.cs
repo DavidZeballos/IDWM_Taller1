@@ -15,7 +15,7 @@ string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
 
 builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlite(connectionString));
 
-// Configurar CORS
+// Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
@@ -46,7 +46,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Usar CORS
+// Use CORS
 app.UseCors("AllowAllOrigins");
 
 app.UseAuthentication();
