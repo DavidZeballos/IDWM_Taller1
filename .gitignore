@@ -1,0 +1,12 @@
+
+# Exclude bin and obj
+bin/
+obj/
+
+# IDEs
+.vscode/
+.idea/
+
+# Environment
+*.sqlite
+*.db
