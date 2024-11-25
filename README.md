@@ -13,11 +13,6 @@
    git clone https://github.com/DavidZeballos/IDWM_Taller1
    ```
 
-3. Navega al directorio del proyecto:
-   ```
-   cd src
-   ```
-
 ## Configuración del proyecto
 
 ### Configurar la base de datos
@@ -35,12 +30,7 @@
 
 ## Ejecutar las migraciones
 
-1. Navega a la carpeta raíz del proyecto:
-   ```
-   cd src
-   ```
-
-2. Aplica las migraciones para crear las tablas en la base de datos:
+1. Aplica las migraciones para crear las tablas en la base de datos:
    ```
    dotnet ef migrations add InitialMigration -o src/Data/Migrations
    dotnet ef database update
