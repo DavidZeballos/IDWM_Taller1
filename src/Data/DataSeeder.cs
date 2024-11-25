@@ -54,7 +54,7 @@ namespace IDWM_TallerAPI.Src.Data
                         Status = true
                     };
 
-                    var adminPassword = "admin123";
+                    var adminPassword = "administrador123";
                     var createAdminResult = await userManager.CreateAsync(adminUser, adminPassword);
 
                     if (createAdminResult.Succeeded)
@@ -71,7 +71,7 @@ namespace IDWM_TallerAPI.Src.Data
                     var genders = new[] { "Masculino", "Femenino", "Otro" };
 
                     var faker = new Faker<User>()
-                        .RuleFor(u => u.UserName, f => f.Person.UserName)
+                        .RuleFor(u => u.UserName, f => f.Name.FullName())
                         .RuleFor(u => u.Rut, f => RutChile.ConvierteTipoRut(RutChile.GeneraRut(1,99999999),10,true,true))
                         .RuleFor(u => u.Email, f => f.Internet.Email())
                         .RuleFor(u => u.DateOfBirth, f => f.Date.Past(30))
@@ -82,7 +82,7 @@ namespace IDWM_TallerAPI.Src.Data
 
                     foreach (var user in users)
                     {
-                        var result = await userManager.CreateAsync(user, "UserPassword123!");
+                        var result = await userManager.CreateAsync(user, "usuarionormal123");
                         if (result.Succeeded)
                         {
                             await userManager.AddToRoleAsync(user, "User");

@@ -14,5 +14,14 @@ namespace IDWM_TallerAPI.Src.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Configuraciones adicionales si son necesarias
+            builder.Entity<User>().ToTable("Users");
+            builder.Entity<IdentityRole<int>>().ToTable("Roles");
+        }
     }
 }
