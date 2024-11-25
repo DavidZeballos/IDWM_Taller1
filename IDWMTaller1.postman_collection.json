@@ -1,0 +1,645 @@
+{
+	"info": {
+		"_postman_id": "cff65c36-6565-44ef-8411-f16cb574e9b6",
+		"name": "TallerWM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33599274"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pedro Pedro\",\r\n  \"dateOfBirth\": \"2000-05-19\",\r\n  \"gender\": \"Otro\"\r\n}\r\n//Edita el usuario logeado",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Account/EditProfile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Account",
+								"EditProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"actualPassword\": \"passwordd\",\r\n  \"newPassword\": \"password\",\r\n  \"confirmPassword\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Account/ChangePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Account",
+								"ChangePassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"ignacio.mancilla@gmail.com\",\r\n  \"password\": \"P4ssw0rd\"\r\n}\r\n\r\n//Seleccionar el token, luego hacer click izquierdo y guardar en una vatiable {{token}} de preferencia.\r\n// O cmabar token en Authorizacion de manera manual.",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"stringst\",\r\n  \"email\": \"user@example.com\",\r\n  \"password\": \"4rxe5huU2Mh5DCVhfQ76\",\r\n  \"confirmPassword\": \"string\",\r\n  \"rut\": \"string\",\r\n  \"dateOfBirth\": \"2024-05-19\",\r\n  \"gender\": \"Otro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "View",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5094/api/Client?id&name&gender",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Client"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null,
+									"description": "integer"
+								},
+								{
+									"key": "name",
+									"value": null,
+									"description": "string"
+								},
+								{
+									"key": "gender",
+									"value": null,
+									"description": "string"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change state",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5094/api/Client/ChangeStatus/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Client",
+								"ChangeStatus",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"item": [
+				{
+					"name": "Upload File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Photo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Photo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"name\": \"string\",\r\n  \"price\": 1000,\r\n  \"inStock\": 100,\r\n  \"imageURL\": \"string\",\r\n  \"productTypeId\": 2,\r\n  \"productType\": {\r\n    \"id\": 0,\r\n    \"name\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5094/api/Product?name=&typeName=&price=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Product"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "string"
+								},
+								{
+									"key": "typeName",
+									"value": "",
+									"description": "string"
+								},
+								{
+									"key": "price",
+									"value": "",
+									"description": "int"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"price\": 10000,\r\n  \"inStock\": 0,\r\n  \"imageURL\": \"string\",\r\n  \"typeName\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Product/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5094/api/Product/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": [
+				{
+					"name": "Product list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Purchase/products?name&typeName&price=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Purchase",
+								"products"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null,
+									"description": "string"
+								},
+								{
+									"key": "typeName",
+									"value": null,
+									"description": "string"
+								},
+								{
+									"key": "price",
+									"value": "",
+									"description": "integer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"quantity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5094/api/Purchase/?productId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Purchase",
+								""
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sale",
+			"item": [
+				{
+					"name": "View",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5094/api/Sale?id&date&price",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Sale"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null,
+									"description": "integer"
+								},
+								{
+									"key": "date",
+									"value": null,
+									"description": "DateTime"
+								},
+								{
+									"key": "price",
+									"value": null,
+									"description": "integer"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Voucher",
+			"item": [
+				{
+					"name": "View",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5094/api/Voucher",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5094",
+							"path": [
+								"api",
+								"Voucher"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
