@@ -24,10 +24,6 @@ namespace IDWM_TallerAPI.Src.Controllers
 
 
         /// Obtiene una lista de clientes.
-        /// "id" es la ID opcional del cliente.
-        /// "name" es el Nombre opcional del cliente.
-        /// "gender" es el Género opcional del cliente.
-        /// Retorna una lista de clientes que coinciden con los parámetros de búsqueda.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetClients([FromQuery] int? id, [FromQuery] string? name, [FromQuery] string? gender)
         {

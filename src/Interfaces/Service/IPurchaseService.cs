@@ -13,7 +13,7 @@ namespace IDWM_TallerAPI.Src.Interfaces.Service
         public Task<VoucherDto> AddPurchase(int productId, int userId, MakePurchaseDto makePurchaseDto);    
         public Task<IEnumerable<VoucherDto>> GetPurchasesById(int id);
         public Task<IEnumerable<VoucherDto>> GetAllPurchases();
-        public Task<IEnumerable<VoucherDto>> GetPurchasesByQuery(int? id, DateTime? date, int? price);
+        public Task<IEnumerable<VoucherDto>> GetPurchasesByQuery(int? id, DateTime? date, string? name);
 
     }
 }

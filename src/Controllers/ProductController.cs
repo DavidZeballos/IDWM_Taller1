@@ -23,7 +23,7 @@ namespace IDWM_TallerAPI.Src.Controllers
             _productService = service;
         }
 
-        /// Retorna una lista de productos que coinciden con los parámetros de búsqueda.
+        // Retorna una lista de productos que coinciden con los parámetros de búsqueda.
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
@@ -50,7 +50,7 @@ namespace IDWM_TallerAPI.Src.Controllers
             }
         }
 
-        /// Agrega un nuevo producto.
+        // Agrega un nuevo producto.
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct([FromBody] ProductDto product)
@@ -76,7 +76,7 @@ namespace IDWM_TallerAPI.Src.Controllers
             }
         }
 
-        /// Edita un producto existente.
+        // Edita un producto existente.
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditProduct(int id, [FromBody] EditProductDto editProduct)
@@ -96,7 +96,7 @@ namespace IDWM_TallerAPI.Src.Controllers
             }
         }
 
-        /// Elimina un producto existente.
+        // Elimina un producto existente.
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)

@@ -50,7 +50,7 @@ namespace IDWM_TallerAPI.Src.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Purchase>> GetPurchasesByQuery(int? id, DateTime? date, int? price)
+        public async Task<IEnumerable<Purchase>> GetPurchasesByQuery(int? id, DateTime? date, string? name)
         {
             var query = _context.Purchases
                 .Include(p => p.Product)
@@ -67,9 +67,9 @@ namespace IDWM_TallerAPI.Src.Repository
                 query = query.Where(p => p.Date.Date == date.Value.Date);
             }
 
-            if (price.HasValue)
+            if (name != null)
             {
-                query = query.Where(p => p.TotalPrice == price.Value);
+                query = query.Where(p => p.User.UserName == name);
             }
 
             return await query.ToListAsync();
