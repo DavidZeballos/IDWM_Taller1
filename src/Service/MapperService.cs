@@ -1,32 +1,42 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using IDWM_TallerAPI.Src.Models;
 using IDWM_TallerAPI.Src.DTOs;
 using IDWM_TallerAPI.Src.Interfaces.Service;
+using IDWM_TallerAPI.Src.Interfaces.Repository;
 
 namespace IDWM_TallerAPI.Src.Service
 {
     public class MapperService : IMapperService
     {
+        private readonly IProductTypeRepository _productTypeRepository;
+
+        public MapperService(IProductTypeRepository productTypeRepository)
+        {
+            _productTypeRepository = productTypeRepository;
+        }
+
+        // Convierte ProductDto a Product y valida el tipo de producto.
         public Product ProductDtoToProduct(ProductDto productDto)
         {
+            var productType = _productTypeRepository.GetProductTypeByName(productDto.ProductTypeName)?.Result;
+            if (productType == null)
+            {
+                throw new InvalidOperationException($"El tipo de producto '{productDto.ProductTypeName}' no es válido.");
+            }
+
             return new Product
             {
                 Name = productDto.Name,
                 Price = productDto.Price,
                 InStock = productDto.InStock,
                 ImageURL = productDto.ImageURL,
-                ProductTypeId = productDto.ProductType.Id,
-                ProductType = new ProductType
-                {
-                    Id = productDto.ProductType.Id,
-                    Name = productDto.ProductType.Name
-                }
+                ProductTypeId = productType.Id,
+                ProductType = productType
             };
         }
-        
+
+        // Convierte Product a ProductDto.
         public ProductDto ProductToProductDto(Product product)
         {
             return new ProductDto
@@ -35,25 +45,21 @@ namespace IDWM_TallerAPI.Src.Service
                 Price = product.Price,
                 InStock = product.InStock,
                 ImageURL = product.ImageURL,
-                ProductTypeId = product.ProductType.Id,
-                ProductType = new ProductTypeDto
-                {
-                    Id = product.ProductType.Id,
-                    Name = product.ProductType.Name
-                }
+                ProductTypeName = product.ProductType.Name
             };
         }
 
         public IEnumerable<ProductDto> ProductsToProductDto(IEnumerable<Product> products)
         {
-            return products.Select(p => ProductToProductDto(p));
+            return products.Select(ProductToProductDto);
         }
 
+        // Convierte un Purchase a VoucherDto.
         public VoucherDto PurchaseToVoucherDto(Purchase purchase)
         {
             if (purchase == null)
             {
-                throw new Exception("Compra no encontrada");
+                throw new Exception("Compra no encontrada.");
             }
 
             return new VoucherDto
@@ -77,9 +83,10 @@ namespace IDWM_TallerAPI.Src.Service
 
         public IEnumerable<VoucherDto> PurchasesToVoucherDto(IEnumerable<Purchase> purchases)
         {
-            return purchases.Select(p => PurchaseToVoucherDto(p));
+            return purchases.Select(PurchaseToVoucherDto);
         }
 
+        // Convierte RegisterUserDto a User.
         public User RegisterUserDtoToUser(RegisterUserDto registerUserDto)
         {
             return new User
@@ -125,9 +132,16 @@ namespace IDWM_TallerAPI.Src.Service
             if (!string.IsNullOrWhiteSpace(editProductDto.ImageURL))
                 product.ImageURL = editProductDto.ImageURL;
 
-            if (editProductDto.ProductTypeId.HasValue)
+            if (!string.IsNullOrWhiteSpace(editProductDto.ProductTypeName))
             {
-                product.ProductTypeId = editProductDto.ProductTypeId.Value;
+                var productType = _productTypeRepository.GetProductTypeByName(editProductDto.ProductTypeName)?.Result;
+                if (productType == null)
+                {
+                    throw new InvalidOperationException($"El tipo de producto '{editProductDto.ProductTypeName}' no es válido.");
+                }
+
+                product.ProductTypeId = productType.Id;
+                product.ProductType = productType;
             }
         }
 

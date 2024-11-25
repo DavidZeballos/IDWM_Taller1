@@ -54,12 +54,11 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         // Cambia la contraseña del usuario autenticado.
-        // "changePasswordDto" son los datos de la contraseña nueva y de la actual.
         // Retorna un mensaje de éxito o error.
         [HttpPut("ChangePassword")]
-        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordDto changePasswordDto)
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordDto currentPassword)
         {
-            if (changePasswordDto == null)
+            if (currentPassword == null)
             {
                 return BadRequest("Los datos proporcionados no son válidos.");
             }
@@ -67,7 +66,7 @@ namespace IDWM_TallerAPI.Src.Controllers
             try
             {
                 var userId = GetAuthenticatedUserId();
-                await _userService.ChangeUserPassword(userId, changePasswordDto);
+                await _userService.ChangeUserPassword(userId, currentPassword);
                 return Ok("Contraseña actualizada correctamente.");
             }
             catch (Exception ex)

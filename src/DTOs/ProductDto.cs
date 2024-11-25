@@ -19,14 +19,9 @@ namespace IDWM_TallerAPI.Src.DTOs
         public required int InStock { get; set; }
 
         [Required(ErrorMessage = "La URL de la imagen es obligatoria.")]
-        [RegularExpression(@"^.*\.(jpg|png)$", ErrorMessage = "La imagen debe ser de formato .png o .jpg.")]
         public required string ImageURL { get; set; }
 
         [Required(ErrorMessage = "El tipo de producto es obligatorio.")]
-        [RegularExpression(@"^(Poleras|Gorros|Juguetería|Alimentación|Libros)$", 
-            ErrorMessage = "El tipo debe ser: Poleras, Gorros, Juguetería, Alimentación o Libros.")]
-
-        public required int ProductTypeId { get; set; }
-        public required ProductTypeDto ProductType { get; set; } = null!;
+        public required string ProductTypeName { get; set; }
     }
 }

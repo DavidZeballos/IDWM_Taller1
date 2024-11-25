@@ -31,12 +31,11 @@ namespace IDWM_TallerAPI.Src.Data
                 if (!context.ProductTypes.Any())
                 {
                     context.ProductTypes.AddRange(
-                        new ProductType { Name = "Tecnología" },
-                        new ProductType { Name = "Hogar y Decoración" },
-                        new ProductType { Name = "Vestimenta" },
-                        new ProductType { Name = "Alimentos" },
-                        new ProductType { Name = "Juguetes" },
-                        new ProductType { Name = "Herramientas" }
+                        new ProductType { Name = "Poleras" },
+                        new ProductType { Name = "Gorros" },
+                        new ProductType { Name = "Juguetería" },
+                        new ProductType { Name = "Alimentación" },
+                        new ProductType { Name = "Libros" }
                     );
                 }
 
@@ -46,15 +45,15 @@ namespace IDWM_TallerAPI.Src.Data
                     // Crear usuario administrador
                     var adminUser = new User
                     {
-                        UserName = "David Zeballos",
-                        Rut = "19.952.533-6",
-                        Email = "david.zeballos@gmail.com",
-                        DateOfBirth = new DateTime(1999, 2, 9),
+                        UserName = GenerateValidName("Ignacio Mancilla"),
+                        Rut = "20.416.699-4",
+                        Email = "admin@idwm.cl",
+                        DateOfBirth = new DateTime(2000, 10, 25),
                         Gender = "Masculino",
                         Status = true
                     };
 
-                    var adminPassword = "administrador123";
+                    var adminPassword = "P4ssw0rd";
                     var createAdminResult = await userManager.CreateAsync(adminUser, adminPassword);
 
                     if (createAdminResult.Succeeded)
@@ -71,8 +70,8 @@ namespace IDWM_TallerAPI.Src.Data
                     var genders = new[] { "Masculino", "Femenino", "Otro" };
 
                     var faker = new Faker<User>()
-                        .RuleFor(u => u.UserName, f => f.Name.FullName())
-                        .RuleFor(u => u.Rut, f => RutChile.ConvierteTipoRut(RutChile.GeneraRut(1,99999999),10,true,true))
+                        .RuleFor(u => u.UserName, f => GenerateValidName(f.Name.FullName()))
+                        .RuleFor(u => u.Rut, f => RutChile.ConvierteTipoRut(RutChile.GeneraRut(1, 99999999), 10, true, true))
                         .RuleFor(u => u.Email, f => f.Internet.Email())
                         .RuleFor(u => u.DateOfBirth, f => f.Date.Past(30))
                         .RuleFor(u => u.Gender, f => f.PickRandom(genders))
@@ -103,7 +102,7 @@ namespace IDWM_TallerAPI.Src.Data
                         .RuleFor(p => p.Price, f => f.Random.Int(1000, 1000000))
                         .RuleFor(p => p.InStock, f => f.Random.Int(5, 100))
                         .RuleFor(p => p.ImageURL, f => f.Image.PicsumUrl(400, 400, true))
-                        .RuleFor(p => p.ProductTypeId, f => f.Random.Int(1, 6));
+                        .RuleFor(p => p.ProductTypeId, f => f.Random.Int(1, 5));
 
                     var products = productFaker.Generate(5);
                     context.Products.AddRange(products);
@@ -111,6 +110,25 @@ namespace IDWM_TallerAPI.Src.Data
 
                 await context.SaveChangesAsync();
             }
+        }
+
+        // Método para generar nombres válidos (de acuerdo a los requerimientos)
+        private static string GenerateValidName(string name)
+        {
+            // Eliminar caracteres no alfabéticos
+            var cleanedName = new string(name.Where(c => char.IsLetter(c) || char.IsWhiteSpace(c)).ToArray());
+
+            // Verificar y ajustar longitud
+            if (cleanedName.Length < 10)
+            {
+                cleanedName = cleanedName.PadRight(10, 'a');
+            }
+            else if (cleanedName.Length > 64)
+            {
+                cleanedName = cleanedName.Substring(0, 64);
+            }
+
+            return cleanedName;
         }
     }
 }

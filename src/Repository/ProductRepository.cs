@@ -21,7 +21,7 @@ namespace IDWM_TallerAPI.Src.Repository
             _context = context;
         }
 
-        public async Task<(IEnumerable<Product>, int)> GetProducts(string? name, string? typeName, int? price, int page, int pageSize)
+        public async Task<(IEnumerable<Product>, int)> GetProducts(string? name, string? typeName, string? sortOrder, int page, int pageSize)
         {
             IQueryable<Product> query = _context.Products.Include(p => p.ProductType);
 
@@ -31,11 +31,17 @@ namespace IDWM_TallerAPI.Src.Repository
             }
             if (!string.IsNullOrWhiteSpace(typeName))
             {
-                query = query.Where(p => p.ProductType.Name.Equals(typeName));
+                query = query.Where(p => p.ProductType.Name.Equals(typeName, StringComparison.OrdinalIgnoreCase));
             }
-            if (price.HasValue)
+            
+            if (!string.IsNullOrWhiteSpace(sortOrder))
             {
-                query = query.Where(p => p.Price == price.Value);
+                query = sortOrder.ToLower() switch
+                {
+                    "asc" => query.OrderBy(p => p.Price),
+                    "desc" => query.OrderByDescending(p => p.Price),
+                    _ => query
+                };
             }
 
             int totalItems = await query.CountAsync();

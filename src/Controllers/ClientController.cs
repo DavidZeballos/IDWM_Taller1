@@ -41,7 +41,7 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         // Cambiar el estado de un cliente (habilitar/deshabilitar)
-        [HttpPatch("{id}/status")]
+        [HttpPut("{id}/status")]
         public async Task<IActionResult> ToggleClientStatus(int id)
         {
             await _userService.ToggleUserStatus(id);

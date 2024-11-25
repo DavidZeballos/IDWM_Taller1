@@ -21,13 +21,11 @@ namespace IDWM_TallerAPI.Src.DTOs
         [Range(0, 99999, ErrorMessage = "La cantidad en stock debe ser un número no negativo menor que 100 mil.")]
         public int? InStock { get; set; }
 
-        [RegularExpression(@"^.*\.(jpg|png)$", ErrorMessage = "La imagen debe ser de formato .png o .jpg.")]
         public string? ImageURL { get; set; }
 
         [RegularExpression(@"^(Poleras|Gorros|Juguetería|Alimentación|Libros)$", 
             ErrorMessage = "El tipo debe ser: Poleras, Gorros, Juguetería, Alimentación o Libros.")]
-        public int? ProductTypeId { get; set; }
-        public ProductTypeDto? ProductType { get; set; }
+        public string? ProductTypeName { get; set; }
 
     }
 }

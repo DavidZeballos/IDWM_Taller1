@@ -9,7 +9,7 @@ namespace IDWM_TallerAPI.Src.Interfaces.Service
 {
     public interface IProductService
     {
-        public Task<(IEnumerable<ProductDto>, int)> GetProducts(string? name, string? typeName, int? price, int page, int pageSize);
+        public Task<(IEnumerable<ProductDto>, int)> GetProducts(string? name, string? typeName, string? sortOrder, int page, int pageSize);
         public Task<ProductDto> GetProductById(int id);
         public Task AddProduct(ProductDto product);
         public Task EditProduct(int id, EditProductDto editProduct);

@@ -95,6 +95,7 @@ builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(
 // Configurar servicios y dependencias
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMapperService, MapperService>();

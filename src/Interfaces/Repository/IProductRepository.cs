@@ -9,7 +9,7 @@ namespace IDWM_TallerAPI.Src.Interfaces.Repository
 {
     public interface IProductRepository
     {
-        Task<(IEnumerable<Product>, int)> GetProducts(string? name, string? typeName, int? price, int page, int pageSize);
+        Task<(IEnumerable<Product>, int)> GetProducts(string? name, string? typeName, string? sortOrder, int page, int pageSize);
         Task<Product?> GetProductById(int id);
 
         Task AddProduct(Product product);

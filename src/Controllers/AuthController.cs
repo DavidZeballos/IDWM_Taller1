@@ -25,7 +25,7 @@ namespace IDWM_TallerAPI.Src.Controllers
         // Retorna un Token JWT si el registro es exitoso.
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Register(RegisterUserDto registerUserDto)
+        public async Task<ActionResult<string>> Register(RegisterUserDto registerUser)
         {
             if (!ModelState.IsValid)
             {
@@ -34,7 +34,7 @@ namespace IDWM_TallerAPI.Src.Controllers
 
             try
             {
-                var token = await _authService.RegisterUser(registerUserDto);
+                var token = await _authService.RegisterUser(registerUser);
                 return Ok(token);
             }
             catch (InvalidOperationException ex)
@@ -51,7 +51,7 @@ namespace IDWM_TallerAPI.Src.Controllers
         // Retorna un Token JWT si las credenciales son correctas.
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Login(LoginDto loginDto)
+        public async Task<ActionResult<string>> Login(LoginDto login)
         {
             if (!ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace IDWM_TallerAPI.Src.Controllers
 
             try
             {
-                var token = await _authService.LoginUser(loginDto);
+                var token = await _authService.LoginUser(login);
                 return Ok(token);
             }
             catch (InvalidOperationException ex)

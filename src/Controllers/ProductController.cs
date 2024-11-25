@@ -29,13 +29,13 @@ namespace IDWM_TallerAPI.Src.Controllers
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
             [FromQuery] string? name,
             [FromQuery] string? typeName,
-            [FromQuery] int? price,
+            [FromQuery] string? sortOrder,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
         try
         {
-            var (products, totalItems) = await _productService.GetProducts(name, typeName, price, page, pageSize);
+            var (products, totalItems) = await _productService.GetProducts(name, typeName, sortOrder, page, pageSize);
             
                 Response.Headers["X-Total-Count"] = totalItems.ToString();
                 Response.Headers["X-Current-Page"] = page.ToString();
@@ -53,11 +53,17 @@ namespace IDWM_TallerAPI.Src.Controllers
         /// Agrega un nuevo producto.
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
+        public async Task<IActionResult> AddProduct([FromBody] ProductDto product)
         {
             try
             {
-                await _productService.AddProduct(productDto);
+                if (string.IsNullOrWhiteSpace(product.ProductTypeName))
+                {
+                    return BadRequest("El tipo de producto es obligatorio.");
+                }
+
+                product.ProductTypeName = product.ProductTypeName.ToLower(); // Normaliza el tipo de producto
+                await _productService.AddProduct(product);
                 return Ok("Producto agregado con éxito.");
             }
             catch (InvalidOperationException ex)
@@ -73,11 +79,11 @@ namespace IDWM_TallerAPI.Src.Controllers
         /// Edita un producto existente.
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> EditProduct(int id, [FromBody] EditProductDto editProductDto)
+        public async Task<IActionResult> EditProduct(int id, [FromBody] EditProductDto editProduct)
         {
             try
             {
-                await _productService.EditProduct(id, editProductDto);
+                await _productService.EditProduct(id, editProduct);
                 return Ok("Producto actualizado con éxito.");
             }
             catch (KeyNotFoundException ex)
