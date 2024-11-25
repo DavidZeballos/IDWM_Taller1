@@ -113,7 +113,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"ignacio.mancilla@gmail.com\",\r\n  \"password\": \"P4ssw0rd\"\r\n}\r\n\r\n//Seleccionar el token, luego hacer click izquierdo y guardar en una vatiable {{token}} de preferencia.\r\n// O cmabar token en Authorizacion de manera manual.",
+							"raw": "{\r\n  \"email\": \"admin@idwm.cl\",\r\n  \"password\": \"P4ssw0rd\"\r\n}\r\n\r\n//Seleccionar el token, luego hacer click izquierdo y guardar en una vatiable {{token}} de preferencia.\r\n// O cmabar token en Authorizacion de manera manual.",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -331,7 +331,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IklnbmFjaW8gTWFuY2lsbGEiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MzI1MDU3ODEsImV4cCI6MTczMjU5MjE4MSwiaWF0IjoxNzMyNTA1NzgxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUyMzAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUyMzAifQ.nWUWXuvoDYF78wMCz2jVaRnE74oAKI6Pep6FcgAlMKpSzwXake8GY1gGI6pqLMP4SfFMThQ4NS-TOftFGC09ng",
 									"type": "string"
 								}
 							]
@@ -339,7 +339,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5230/api/Product?name=&typeName=&sortOrder=",
+							"raw": "http://localhost:5230/api/Product?name=&typeName=&sortOrder=asc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -362,7 +362,7 @@
 								},
 								{
 									"key": "sortOrder",
-									"value": "",
+									"value": "asc",
 									"description": "int"
 								}
 							]
@@ -378,7 +378,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IklnbmFjaW8gTWFuY2lsbGEiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MzI1MDU3ODEsImV4cCI6MTczMjU5MjE4MSwiaWF0IjoxNzMyNTA1NzgxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUyMzAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUyMzAifQ.nWUWXuvoDYF78wMCz2jVaRnE74oAKI6Pep6FcgAlMKpSzwXake8GY1gGI6pqLMP4SfFMThQ4NS-TOftFGC09ng",
 									"type": "string"
 								}
 							]
@@ -387,7 +387,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"string\",\r\n  \"price\": 10000,\r\n  \"inStock\": 0,\r\n  \"imageURL\": \"string\",\r\n  \"typeName\": \"string\"\r\n}",
+							"raw": "{\r\n  \"name\": \"producto modificado\",\r\n  \"price\": 10000,\r\n  \"inStock\": 0,\r\n  \"imageURL\": \"imagen\",\r\n  \"typeName\": \"Poleras\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

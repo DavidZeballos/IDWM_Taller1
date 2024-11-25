@@ -26,9 +26,16 @@ namespace IDWM_TallerAPI.Src.Service
             _cloudinary = new Cloudinary(account);
         }
 
+        // Sube una imagen al servicio Cloudinary.
         public async Task<ImageUploadResult> AddPhoto(IFormFile photo)
         {
             var uploadResult = new ImageUploadResult();
+
+            var allowedFormats = new List<string> { "image/png", "image/jpeg" };
+            if (!allowedFormats.Contains(photo.ContentType))
+            {
+                throw new InvalidOperationException("El formato de la imagen no es válido. Solo se permiten archivos .png y .jpg.");
+            }
             if(photo.Length > 0)
             {
                 using var stream = photo.OpenReadStream();
@@ -49,6 +56,7 @@ namespace IDWM_TallerAPI.Src.Service
             return uploadResult;
         }
 
+        // Elimina una imagen de cloudinary por su "publicId"
         public async Task<DeletionResult> DeletePhoto(string publicId)
         {
             var deleteParams = new DeletionParams(publicId);

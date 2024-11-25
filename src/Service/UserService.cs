@@ -22,6 +22,7 @@ namespace IDWM_TallerAPI.Src.Service
             _userManager = userManager;
         }
 
+        // Elimina un usuario
         public async Task DeleteUser(int id)
         {
             var user = await _userRepository.GetUserById(id);
@@ -37,6 +38,7 @@ namespace IDWM_TallerAPI.Src.Service
             }
         }
 
+        // Modifica un usuario
         public async Task EditUser(int id, EditUserDto editUserDto)
         {
             var user = await _userRepository.GetUserById(id);
@@ -54,6 +56,7 @@ namespace IDWM_TallerAPI.Src.Service
             }
         }
 
+        // Cambia la contraseña del usuario
         public async Task ChangeUserPassword(int id, ChangePasswordDto changePasswordDto)
         {
             // Validar coincidencia de contraseñas
@@ -84,6 +87,7 @@ namespace IDWM_TallerAPI.Src.Service
             }
         }
 
+        // Obtiene todos los usuarios que se adecuen a un filtro de id, nombre, o género
         public async Task<IEnumerable<UserDto>> GetUsers(int? id = null, string? name = null, string? gender = null)
         {
             var users = await _userRepository.GetUsers();
@@ -99,6 +103,7 @@ namespace IDWM_TallerAPI.Src.Service
             return _mapperService.UsersToUserDto(users);
         }
 
+        // Cambia el estado de un usuario
         public async Task ToggleUserStatus(int id)
         {
             var user = await _userRepository.GetUserById(id);

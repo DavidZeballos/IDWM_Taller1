@@ -20,6 +20,7 @@ namespace IDWM_TallerAPI.Src.Service
             
         }
 
+        // Realiza la compra de un producto
         public async Task<VoucherDto> AddPurchase(int productId, int userId, MakePurchaseDto makePurchaseDto)
         {
             // Validar el producto
@@ -58,18 +59,21 @@ namespace IDWM_TallerAPI.Src.Service
             return _mapperService.PurchaseToVoucherDto(purchase);
         }
 
+        // Obtiene todas las compras
         public async Task<IEnumerable<VoucherDto>> GetAllPurchases()
         {
             var purchases = await _purchaseRepository.GetAllPurchases();
             return _mapperService.PurchasesToVoucherDto(purchases);
         }
 
+        // Obtiene las compras por id de compra
         public async Task<IEnumerable<VoucherDto>> GetPurchasesById(int id)
         {
             var purchases = await _purchaseRepository.GetPurchasesById(id);
             return _mapperService.PurchasesToVoucherDto(purchases);
         }
 
+        // Obtiene las compras según su fecha y nombre (opcionales)
         public async Task<IEnumerable<VoucherDto>> GetPurchasesByQuery(int? id, DateTime? date, string? name)
         {
             var purchases = await _purchaseRepository.GetPurchasesByQuery(id, date, name);

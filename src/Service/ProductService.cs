@@ -18,6 +18,7 @@ namespace IDWM_TallerAPI.Src.Service
             _mapperService = mapperService;
         }
 
+        // Obtiene todos los productos, filtrando por nombre, tipo, y orden ascendente o descendente (según precio)
         public async Task<(IEnumerable<ProductDto>, int)> GetProducts(string? name, string? typeName, string? sortOrder, int page, int pageSize)
         {
             var (products, totalItems) = await _productRepository.GetProducts(name, typeName, sortOrder, page, pageSize);
@@ -25,6 +26,7 @@ namespace IDWM_TallerAPI.Src.Service
             return (mappedProducts, totalItems);
         }
 
+        // Obtiene un producto por su id
         public async Task<ProductDto> GetProductById(int id)
         {
             var product = await _productRepository.GetProductById(id);
@@ -36,6 +38,7 @@ namespace IDWM_TallerAPI.Src.Service
             return _mapperService.ProductToProductDto(product);
         }
 
+        // Añade un nuevo producto
         public async Task AddProduct(ProductDto productDto)
         {
             if (productDto == null) throw new ArgumentNullException(nameof(productDto));
@@ -58,6 +61,7 @@ namespace IDWM_TallerAPI.Src.Service
             await _productRepository.AddProduct(product);
         }
 
+        // Modifica un producto
         public async Task EditProduct(int id, EditProductDto editProductDto)
         {
             if (editProductDto == null) throw new ArgumentNullException(nameof(editProductDto));
@@ -99,6 +103,7 @@ namespace IDWM_TallerAPI.Src.Service
             await _productRepository.EditProduct(existingProduct);
         }
 
+        // Elimina un producto por su id
         public async Task DeleteProduct(int id)
         {
             var product = await _productRepository.GetProductById(id);
