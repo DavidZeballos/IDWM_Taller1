@@ -70,10 +70,11 @@ namespace IDWM_TallerAPI.Src.Service
             return _mapperService.PurchasesToVoucherDto(purchases);
         }
 
-        public async Task<IEnumerable<VoucherDto>> GetPurchasesByQuery(int? id, DateTime? date, int? price)
+        public async Task<IEnumerable<VoucherDto>> GetPurchasesByQuery(int? id, DateTime? date, string? name)
         {
-            var purchases = await _purchaseRepository.GetPurchasesByQuery(id, date, price);
+            var purchases = await _purchaseRepository.GetPurchasesByQuery(id, date, name);
             return _mapperService.PurchasesToVoucherDto(purchases);
         }
+
     }
 }
