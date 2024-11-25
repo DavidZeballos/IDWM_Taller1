@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "cff65c36-6565-44ef-8411-f16cb574e9b6",
+		"_postman_id": "40eda8cf-5659-4a4b-a3de-906d767b07c7",
 		"name": "TallerWM",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33599274"
+		"_exporter_id": "27148180"
 	},
 	"item": [
 		{
@@ -34,12 +34,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Account/EditProfile",
+							"raw": "http://localhost:5230/api/Account/EditProfile",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Account",
@@ -74,12 +74,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Account/ChangePassword",
+							"raw": "http://localhost:5230/api/Account/ChangePassword",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Account",
@@ -121,12 +121,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Auth/login",
+							"raw": "http://localhost:5230/api/Auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Auth",
@@ -151,12 +151,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Auth/register",
+							"raw": "http://localhost:5230/api/Auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Auth",
@@ -187,12 +187,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5094/api/Client?id&name&gender",
+							"raw": "http://localhost:5230/api/Client?id&name&gender",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Client"
@@ -234,12 +234,12 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5094/api/Client/ChangeStatus/2",
+							"raw": "http://localhost:5230/api/Client/ChangeStatus/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Client",
@@ -265,12 +265,12 @@
 							"file": {}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Photo",
+							"raw": "http://localhost:5230/api/Photo",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Photo"
@@ -309,12 +309,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Product",
+							"raw": "http://localhost:5230/api/Product",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Product"
@@ -339,12 +339,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5094/api/Product?name=&typeName=&price=",
+							"raw": "http://localhost:5230/api/Product?name=&typeName=&sortOrder=",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Product"
@@ -361,7 +361,7 @@
 									"description": "string"
 								},
 								{
-									"key": "price",
+									"key": "sortOrder",
 									"value": "",
 									"description": "int"
 								}
@@ -395,12 +395,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Product/1",
+							"raw": "http://localhost:5230/api/Product/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Product",
@@ -426,12 +426,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5094/api/Product/1",
+							"raw": "http://localhost:5230/api/Product/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Product",
@@ -474,12 +474,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Purchase/products?name&typeName&price=",
+							"raw": "http://localhost:5230/api/Purchase/products?name&typeName&price=",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Purchase",
@@ -531,12 +531,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5094/api/Purchase/?productId=1",
+							"raw": "http://localhost:5230/api/Purchase/?productId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Purchase",
@@ -573,12 +573,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5094/api/Sale?id&date&price",
+							"raw": "http://localhost:5230/api/Sale?id&date&price",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Sale"
@@ -625,12 +625,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5094/api/Voucher",
+							"raw": "http://localhost:5230/api/Voucher",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5094",
+							"port": "5230",
 							"path": [
 								"api",
 								"Voucher"
