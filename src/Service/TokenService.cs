@@ -37,7 +37,9 @@ namespace IDWM_TallerAPI.Src.Service
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email ?? throw new ArgumentNullException(nameof(user.Email), "El email de usuario no puede ser nulo")),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName ?? throw new ArgumentNullException(nameof(user.UserName), "El nombre de usuario no puede ser nulo"))
+                new Claim("Id", user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName ?? throw new ArgumentNullException(nameof(user.UserName), "El nombre de usuario no puede ser nulo")),
+                new Claim("DateOfBirth", user.DateOfBirth.ToString("o"))
             };
 
             // Agregar roles si están presentes

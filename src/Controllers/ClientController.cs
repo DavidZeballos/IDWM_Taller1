@@ -25,13 +25,22 @@ namespace IDWM_TallerAPI.Src.Controllers
 
         /// Obtiene una lista de clientes.
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetClients([FromQuery] int? id, [FromQuery] string? name, [FromQuery] string? gender)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetClients(
+            [FromQuery] int? id, 
+            [FromQuery] string? name, 
+            [FromQuery] string? gender, 
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 10)
         {
-            try{ 
-                var clients = await _userService.GetUsers(id, name, gender);
-                return Ok(clients);
+            try
+            {
+                var users = await _userService.GetUsers(id, name, gender);
+                var paginatedUsers = users.Skip((page - 1) * pageSize).Take(pageSize);
+                Response.Headers["X-Total-Count"] = users.Count().ToString();
+                return Ok(paginatedUsers);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
