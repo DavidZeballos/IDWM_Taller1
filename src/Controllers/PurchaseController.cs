@@ -121,7 +121,11 @@ namespace IDWM_TallerAPI.Src.Controllers
                 return BadRequest("El carrito está vacío.");
             }
 
-            var userId = int.Parse(User.Claims.First(c => c.Type == "Id").Value);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "Id");
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized("El usuario no está autenticado o el token es inválido.");
+            }
 
             try
             {

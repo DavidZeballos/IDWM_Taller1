@@ -25,7 +25,7 @@ namespace IDWM_TallerAPI.Src.Controllers
 
         // Retorna una lista de productos que coinciden con los parámetros de búsqueda.
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
             [FromQuery] string? name,
             [FromQuery] string? typeName,

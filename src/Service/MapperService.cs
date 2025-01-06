@@ -110,6 +110,7 @@ namespace IDWM_TallerAPI.Src.Service
                 Email = user.Email ?? string.Empty,
                 DateOfBirth = user.DateOfBirth,
                 Gender = user.Gender,
+                Status = user.Status
             };
         }
 

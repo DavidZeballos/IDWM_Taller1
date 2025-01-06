@@ -28,6 +28,8 @@ namespace IDWM_TallerAPI.Src.DTOs
         [Required]
         [RegularExpression(@"^(Masculino|Femenino|Prefiero no decirlo|Otro)$", ErrorMessage = "Debe ser entre Masculino, Femenino, Prefiero no decirlo, y Otro.")]
         public required string Gender { get; set; } = string.Empty;
+
+        public required bool Status { get; set; }
         public List<ProductDto> Products { get; set; } = [];
     }
 }
