@@ -22,6 +22,21 @@ namespace IDWM_TallerAPI.Src.Service
             _userManager = userManager;
         }
 
+        public async Task<UserDto?> GetUserByIdAsync(int id)
+        {
+            // Buscar usuario por ID
+            var user = await _userRepository.GetUserById(id);
+
+            // Verificar si el usuario existe
+            if (user == null)
+            {
+                return null;
+            }
+
+            // Mapear a UserDto
+            return _mapperService.UserToUserDto(user);
+        }
+
         // Elimina un usuario
         public async Task DeleteUser(int id)
         {

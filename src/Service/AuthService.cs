@@ -25,6 +25,12 @@ namespace IDWM_TallerAPI.Src.Service
                 throw new ArgumentNullException(nameof(registerUserDto), "Los datos de registro no pueden estar vacíos.");
             }
 
+            // Validar si el usuario ya existe
+            if (await _userManager.FindByEmailAsync(registerUserDto.Email) != null)
+            {
+                throw new InvalidOperationException("El correo electrónico ya está registrado.");
+            }
+
             // Crear usuario
             var user = new User
             {
@@ -36,26 +42,26 @@ namespace IDWM_TallerAPI.Src.Service
                 Status = true
             };
 
-            // Crear usuario con contraseña
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException(string.Join(", ", result.Errors.Select(e => e.Description)));
+                throw new InvalidOperationException($"Error al crear el usuario: {string.Join(", ", result.Errors.Select(e => e.Description))}");
             }
 
-            // Asignar rol al usuario
+            // Verificar si el rol existe
             if (!await _roleManager.RoleExistsAsync("User"))
             {
-                throw new InvalidOperationException("El rol de usuario no está configurado en el sistema.");
+                throw new InvalidOperationException("El rol 'User' no está configurado en el sistema.");
             }
 
+            // Asignar rol
             var roleResult = await _userManager.AddToRoleAsync(user, "User");
             if (!roleResult.Succeeded)
             {
-                throw new InvalidOperationException(string.Join(", ", roleResult.Errors.Select(e => e.Description)));
+                throw new InvalidOperationException($"Error al asignar el rol 'User': {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
             }
 
-            // Generar y retornar el token
+            // Generar token
             var roles = await _userManager.GetRolesAsync(user);
             return _tokenService.CreateToken(user, roles);
         }

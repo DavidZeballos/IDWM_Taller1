@@ -10,7 +10,6 @@ using CloudinaryDotNet.Actions;
 namespace IDWM_TallerAPI.Src.Controllers
 {
     [ApiController]
-    [Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
@@ -22,9 +21,41 @@ namespace IDWM_TallerAPI.Src.Controllers
             _userService = userService;
         }
 
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<ActionResult<UserDto>> GetProfile()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst("Id")?.Value;
+
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Unauthorized("No se encontró el claim 'Id' en el token.");
+                }
+
+                if (!int.TryParse(userIdClaim, out int userId))
+                {
+                    return BadRequest("El claim 'Id' no es válido.");
+                }
+
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound("Usuario no encontrado.");
+                }
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener el perfil: {ex.Message}");
+            }
+        }
 
         /// Obtiene una lista de clientes.
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetClients(
             [FromQuery] int? id, 
             [FromQuery] string? name, 
@@ -47,6 +78,7 @@ namespace IDWM_TallerAPI.Src.Controllers
 
         // Cambiar el estado de un cliente (habilitar/deshabilitar)
         [HttpPut("{id}/status")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> ToggleClientStatus(int id)
         {
             await _userService.ToggleUserStatus(id);
@@ -55,6 +87,7 @@ namespace IDWM_TallerAPI.Src.Controllers
 
         // Eliminar un cliente
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteClient(int id)
         {
             await _userService.DeleteUser(id);
