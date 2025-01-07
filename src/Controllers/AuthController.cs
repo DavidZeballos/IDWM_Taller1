@@ -22,28 +22,28 @@ namespace IDWM_TallerAPI.Src.Controllers
         }
 
         // Registra un nuevo usuario.
-        // Retorna un Token JWT si el registro es exitoso.
+        // Retorna un Token JWT si el registro es exitoso.¿
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Register(RegisterUserDto registerUser)
+        public async Task<IActionResult> Register(RegisterUserDto registerUser)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { code = 400, message = "Datos de registro inválidos." });
             }
 
             try
             {
                 var token = await _authService.RegisterUser(registerUser);
-                return Ok(token);
+                return Ok(new { token });
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(ex.Message); // Error específico
+                return Conflict(new { code = 409, message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message); // Error genérico
+                return StatusCode(500, new { code = 500, message = "Error interno del servidor.", details = ex.Message });
             }
         }
 
@@ -51,25 +51,58 @@ namespace IDWM_TallerAPI.Src.Controllers
         // Retorna un Token JWT si las credenciales son correctas.
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Login(LoginDto login)
+        public async Task<IActionResult> Login(LoginDto login)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new
+                {
+                    code = 400,
+                    message = "Datos de inicio de sesión inválidos.",
+                    details = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                });
             }
 
             try
             {
                 var token = await _authService.LoginUser(login);
-                return Ok(token);
+                if (string.IsNullOrEmpty(token))
+                {
+                    return Unauthorized(new
+                    {
+                        code = 401,
+                        message = "Error: No se generó un token válido."
+                    });
+                }
+
+                return Ok(new { token });
             }
             catch (InvalidOperationException ex)
             {
-                return Unauthorized(ex.Message); // Error de autenticación
+                return Unauthorized(new
+                {
+                    code = 401,
+                    message = "Credenciales inválidas.",
+                    details = ex.Message
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new
+                {
+                    code = 404,
+                    message = "Usuario no encontrado.",
+                    details = ex.Message
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message); // Error genérico
+                return StatusCode(500, new
+                {
+                    code = 500,
+                    message = "Error interno del servidor durante el inicio de sesión.",
+                    details = ex.Message
+                });
             }
         }
     }

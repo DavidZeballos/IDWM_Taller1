@@ -9,6 +9,7 @@ namespace IDWM_TallerAPI.Src.Interfaces.Service
     public interface IUserService
     {
         public Task<IEnumerable<UserDto>> GetUsers(int? id, string? name, string? gender);
+        public Task<UserDto?> GetUserByIdAsync(int id);
         public Task EditUser(int id, EditUserDto editUser);
         public Task DeleteUser(int id);
         public Task ToggleUserStatus(int id);
